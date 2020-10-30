@@ -8,7 +8,8 @@ const README_FILE_PATH = core.getInput("readme_path");
 const GITHUB_TOKEN = core.getInput("gh_token");
 core.setSecret(GITHUB_TOKEN);
 
-const MAX_VISIBLE_ITEMS = 5;
+const ITEMS_PER_ROW = 5;
+const MAX_ROWS = 3;
 
 const buildReadme = (previousContent, newContent) => {
   const tagToLookFor = `<!-- MY_PLAYLISTS:`;
@@ -91,39 +92,25 @@ spotify.getPlaylists().then((playlists) => {
     .then(() => runCommand("git", ["pull"]))
     .then(() => {
       try {
-        const readmeData = fs.readFileSync(README_FILE_PATH, "utf8");
-        let renderTop = (playlist) => {
+        let render = (playlist) => {
           return (
             `<a href='${playlist.link}' target='_blank'>` +
             `<img align="left" width="150px" src="${playlist.img}"/>` +
             `</a>\n`
           );
         };
-        let renderMore = (playlist) => {
-          return (
-            `<img align='left' src='${playlist.img}' width='55px' />` +
-            `<a href='${playlist.link}' target='_blank'>` +
-            `<p align='left'>${playlist.name}</p>` +
-            `</a><br/>\n`
-          );
-        };
 
-        let makeList = (list, render) => {
+        let makeRow = (list) => {
           return list.reduce((acc, cur, index) => acc + render(cur), "\n");
         };
-
-        let list = makeList(playlists.slice(0, MAX_VISIBLE_ITEMS), renderTop);
-
-        if (playlists.length > MAX_VISIBLE_ITEMS) {
-          list += "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
-          list += "<details><summary>More</summary><br>";
-          list += makeList(
-            playlists.slice(MAX_VISIBLE_ITEMS, playlists.length),
-            renderMore
-          );
-          list += "</details>\n";
+        let current = 0;
+        let list = "";
+        while (current < ITEMS_PER_ROW * MAX_ROWS) {
+          list += makeRow(playlists.slice(current, current + ITEMS_PER_ROW));
+          current += ITEMS_PER_ROW;
         }
 
+        const readmeData = fs.readFileSync(README_FILE_PATH, "utf8");
         const newReadme = buildReadme(readmeData, list);
         if (newReadme !== readmeData) {
           fs.writeFileSync("README.md", newReadme);
