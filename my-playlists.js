@@ -92,7 +92,14 @@ spotify.getPlaylists().then((playlists) => {
     .then(() => {
       try {
         const readmeData = fs.readFileSync(README_FILE_PATH, "utf8");
-        let render = (playlist) => {
+        let renderTop = (playlist) => {
+          return (
+            `<a href='${playlist.link}' target='_blank'>` +
+            `<img align="left" width="150px" src="${playlist.img}"/>` +
+            `</a>\n`
+          );
+        };
+        let renderMore = (playlist) => {
           return (
             `<img align='left' src='${playlist.img}' width='55px' />` +
             `<a href='${playlist.link}' target='_blank'>` +
@@ -101,18 +108,20 @@ spotify.getPlaylists().then((playlists) => {
           );
         };
 
-        let makeList = (list) => {
-          return list.reduce((acc, cur, index) => acc + render(cur), "");
+        let makeList = (list, render) => {
+          return list.reduce((acc, cur, index) => acc + render(cur), "\n");
         };
 
-        let list = makeList(playlists.slice(0, MAX_VISIBLE_ITEMS));
+        let list = makeList(playlists.slice(0, MAX_VISIBLE_ITEMS), renderTop);
 
         if (playlists.length > MAX_VISIBLE_ITEMS) {
+          list += "<br/><br/><br/><br/><br/><br/><br/><br/>";
           list += "<details><summary>More</summary><br>";
           list += makeList(
-            playlists.slice(MAX_VISIBLE_ITEMS, playlists.length)
+            playlists.slice(MAX_VISIBLE_ITEMS, playlists.length),
+            renderMore
           );
-          list += "</details>";
+          list += "</details>\n";
         }
 
         const newReadme = buildReadme(readmeData, list);
