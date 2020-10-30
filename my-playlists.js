@@ -115,7 +115,7 @@ spotify.getPlaylists().then((playlists) => {
         let list = makeList(playlists.slice(0, MAX_VISIBLE_ITEMS), renderTop);
 
         if (playlists.length > MAX_VISIBLE_ITEMS) {
-          list += "<br/><br/><br/><br/><br/><br/><br/><br/>";
+          list += "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
           list += "<details><summary>More</summary><br>";
           list += makeList(
             playlists.slice(MAX_VISIBLE_ITEMS, playlists.length),

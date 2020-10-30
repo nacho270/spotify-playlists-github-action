@@ -84,7 +84,7 @@ async function getPlaylists() {
     .map((pl) => {
       return {
         name: pl.name,
-        link: pl.href,
+        link: pl.external_urls.spotify,
         img: pl.images[0].url,
       };
     });
