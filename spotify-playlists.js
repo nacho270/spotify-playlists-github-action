@@ -85,7 +85,7 @@ async function getPlaylists() {
       return {
         name: pl.name,
         link: pl.external_urls.spotify,
-        img: pl.images[0].url,
+        img: pl.images && pl.images.length > 0 ? pl.images[0].url : null,
       };
     });
 }

@@ -93,11 +93,9 @@ spotify.getPlaylists().then((playlists) => {
     .then(() => {
       try {
         let render = (playlist) => {
-          return (
-            `<a href='${playlist.link}' target='_blank'>` +
-            `<img align="left" width="150px" src="${playlist.img}"/>` +
-            `</a>\n`
-          );
+          return `<a href='${playlist.link}' target='_blank'>` + playlist.img
+            ? `<img align="left" width="150px" src="${playlist.img}"/>`
+            : `` + `</a>\n`;
         };
 
         let makeRow = (list) => {
