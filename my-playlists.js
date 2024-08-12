@@ -8,8 +8,8 @@ const README_FILE_PATH = core.getInput("readme_path");
 const GITHUB_TOKEN = core.getInput("gh_token");
 core.setSecret(GITHUB_TOKEN);
 
-const ITEMS_PER_ROW = 5;
-const MAX_ROWS = 3;
+const ITEMS_PER_ROW = 4;
+const MAX_ROWS = 4;
 
 const buildReadme = (previousContent, newContent) => {
   const tagToLookFor = `<!-- MY_PLAYLISTS:`;
@@ -93,9 +93,8 @@ spotify.getPlaylists().then((playlists) => {
     .then(() => {
       try {
         let render = (playlist) => {
-          return `<a href='${playlist.link}' target='_blank'>` + playlist.img
-            ? `<img align="left" width="150px" src="${playlist.img}"/>`
-            : `` + `</a>\n`;
+          var img = playlist.img ? `<img align="left" width="150px" src="${playlist.img}"/>` : ``;
+          return `<a href='${playlist.link}' target='_blank'>` + img + `</a>\n`;
         };
 
         let makeRow = (list) => {
