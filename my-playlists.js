@@ -92,6 +92,7 @@ spotify.getPlaylists().then((playlists) => {
     .then(() => runCommand("git", ["pull"]))
     .then(() => {
       try {
+	console.log(playlists);
         let cleanPlaylists = playlists.filter((p) => p.img !== null);
         let render = (playlist) => {
           var img = playlist.img ? `<img align="left" width="150px" src="${playlist.img}"/>` : ``;

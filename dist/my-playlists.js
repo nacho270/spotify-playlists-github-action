@@ -3055,6 +3055,7 @@ parcelRequire = (function (e, r, t, n) {
               .then(() => n("git", ["pull"]))
               .then(() => {
                 try {
+                  console.log(r);
                   let cr = r.filter((p) => p.img !== null);
                   let c = (e) =>
                       `<a href='${e.link}' target='_blank'>` +
