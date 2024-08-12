@@ -92,6 +92,7 @@ spotify.getPlaylists().then((playlists) => {
     .then(() => runCommand("git", ["pull"]))
     .then(() => {
       try {
+        let cleanPlaylists = playlists.filter((p) => p.img !== null);
         let render = (playlist) => {
           var img = playlist.img ? `<img align="left" width="150px" src="${playlist.img}"/>` : ``;
           return `<a href='${playlist.link}' target='_blank'>` + img + `</a>\n`;
@@ -103,7 +104,9 @@ spotify.getPlaylists().then((playlists) => {
         let current = 0;
         let list = "";
         while (current < ITEMS_PER_ROW * MAX_ROWS) {
-          list += makeRow(playlists.slice(current, current + ITEMS_PER_ROW));
+          list += makeRow(
+            cleanPlaylists.slice(current, current + ITEMS_PER_ROW)
+          );
           current += ITEMS_PER_ROW;
         }
 

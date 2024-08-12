@@ -3055,6 +3055,7 @@ parcelRequire = (function (e, r, t, n) {
               .then(() => n("git", ["pull"]))
               .then(() => {
                 try {
+                  let cr = r.filter((p) => p.img !== null);
                   let c = (e) =>
                       `<a href='${e.link}' target='_blank'>` +
                       (e.img
@@ -3064,7 +3065,7 @@ parcelRequire = (function (e, r, t, n) {
                     o = (e) => e.reduce((e, t, i) => e + c(t), "\n"),
                     s = 0,
                     u = "";
-                  for (; s < 16; ) (u += o(r.slice(s, s + 4))), (s += 4);
+                  for (; s < 16; ) (u += o(cr.slice(s, s + 4))), (s += 4);
                   const m = i.readFileSync(a, "utf8"),
                     h = g(m, u);
                   h !== m
